@@ -1,0 +1,111 @@
+<!doctype html>
+<html ng-app="siTableExampleApp">
+<head>
+  <title>si-table example</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style/style.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+  <script src="../angular/si-table.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="main.js"></script>
+  <!-- <script src="updateModal.js"></script> -->
+</head>
+<body>
+  <div class="container">
+
+    <div ng-controller="ExampleCtrl">
+ 
+      <!-- Add/Edit modal -->
+      <modal id="modalEdit" title="Product" visible="showModal" backdrop="static">
+        <form name="productForm" role="form">
+          <div class="form-group">
+            <label for="name">Name product:</label>
+            <input name="name" type="text" class="form-control" id="nameModal" placeholder="Enter name" ng-model="product.name" required/>
+            <p ng-show="productForm.name.$invalid && !productForm.name.$pristine" class="help-block">You name is required.</p>
+          </div>
+          <div class="form-group">
+            <label for="email">Supplier email:</label>
+            <input type="email" class="form-control" id="emailModal" placeholder="Enter email" />
+          </div>      
+          <div class="form-group">
+            <label for="count">Count:</label>
+            <input type="number" class="form-control" id="countModal" placeholder="Enter count" />
+          </div>           
+          <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" class="form-control" id="priceModal" placeholder="Enter price" />
+          </div>
+          <button type="submit" id="doneProd" class="btn btn-default">Done</button>
+        </form>
+      </modal>
+
+      <!-- About product modal -->
+      <modal id="modalAbout" title="About product" visible="showModalAbout" backdrop="static">
+        <form role="form">
+          <div class="form-group">
+            <label id="nameAbout"></label>
+          </div>
+          <div class="form-group">
+            <label id="emailAbout"></label>
+          </div>      
+          <div class="form-group">
+            <label id="countAbout"></label>
+          </div>           
+          <div class="form-group">
+            <label id="priceAbout"></label>
+          </div>
+        </form>
+      </modal>
+
+      <!-- Delete modal -->
+      <modal id="modalDelete" class="small-modal" title="Are you sure?" visible="showModalDelete" backdrop="static">
+        <form role="form">
+            <label id="question"></label>
+            <div >
+              <button type="submit" id="yesDelete" class="btn btn-default">Yes</button>
+              <button type="button" id="noDelete" class="btn btn-default">No</button>
+            </div>
+        </form>
+      </modal>
+
+
+
+      <!-- Main form --> 
+      <div class="row">
+        <table class="form">
+          <tr>
+            <td class="form-group">
+              <input type="text" class="form-control" ng-model="filter.name" placeholder="filter for product name">
+            </td>
+            <td><button ng-click="updateModal(null)">Add New</button></td>
+          </tr>
+        </tabe>
+
+        <table class="table" si-table>
+          <thead>
+            <tr>
+              <th sort-by="name" sort-init="asc">Name</th>
+              <th sort-by="price">Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="product in products | filter:filter" si-sortable="single">
+              <td class="text-muted">
+                <strong><a ng-click="aboutModal(product)">{{ product.name }}</a></strong>
+                {{"     (" + product.count + ")"}}</td>
+                <td class="text-muted">{{ product.price | currency}}</td>
+                <td>
+                  <button ng-click="updateModal(product)">Edit</button>
+                  <button ng-click="deleteModal(product)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+  </div>
+</body>
+</html>
