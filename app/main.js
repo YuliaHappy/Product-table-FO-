@@ -74,7 +74,7 @@ mymodal.directive('modal', function () {
     replace:true,
     scope:true,
     link: function postLink(scope, element, attrs) {
-      scope.title = attrs.title;
+      // scope.title = attrs.title;
 
       scope.$watch(attrs.visible, function(value){
         if(value == true) {
@@ -110,9 +110,16 @@ mymodal.directive('modal', function () {
         }
       });
 
+      //Add/Edit modal hidden      
+      $('#modalEdit').on("hidden.bs.modal", function () {        
+          $("#nameModal, #priceModal, #emailModal")
+          .val("");
+          $("#countModal").val(0);
+      });
+
       // About modal open
       $("#modalAbout").on("show.bs.modal", function () {
-        console.log("About" + scope.$parent.aboutProduct);
+        scope.title = "About product";
         $("#nameAbout").text("Name product:    " + scope.$parent.aboutProduct.name);
         $("#priceAbout").text("Price:    " + scope.$parent.aboutProduct.price);
         $("#countAbout").text("Count:    " + scope.$parent.aboutProduct.count);
@@ -124,8 +131,6 @@ mymodal.directive('modal', function () {
         console.log("Delete" + scope.$parent.deleteProduct);
         $("#question").text("Are you sure you want to perform " + scope.$parent.deleteProduct.name + "?");
       });
-
-
 
       // Add/Edit product
       $("#doneProd").on("click", function() {
@@ -149,8 +154,9 @@ mymodal.directive('modal', function () {
             };
           }
           $('#modalEdit').modal("hide");
-          $("#nameModal, #priceModal, #countModal, #emailModal")
-          .val("");
+          $("#nameModal, #priceModal, #emailModal")
+            .val("");
+          $("#countModal").val(0);
         }
       });
 
@@ -158,13 +164,49 @@ mymodal.directive('modal', function () {
       $("#yesDelete").on("click", function() {
         scope.$parent.products
           .splice(scope.$parent.products
-              .indexOf(scope.$parent.editProduct) - 1, 1);
+              .indexOf(scope.$parent.deleteProduct), 1);
         $("#modalDelete").modal("hide");
       });
       $("#noDelete").on("click", function() {
         $("#modalDelete").modal("hide");
       });
-
     } 
   }
 });
+
+mymodal.directive('nameValidator', function() {
+    return {
+      restrict: 'A',
+      require:  'ngModel',
+      link: function (scope, element, attr, mCtrl) {
+        function myValidation(value) {
+        if (value != "" && value.length < 16 && /[^\s]/.test(value)) {
+          mCtrl.$setValidity('nameValidator', true);
+        } else {
+          mCtrl.$setValidity('nameValidator', false);
+        }
+        return value;
+      }
+      mCtrl.$parsers.push(myValidation);
+      }
+    }
+  });
+
+mymodal.directive('countValidator', function() {
+    return {
+      restrict: 'A',
+      require:  'ngModel',
+      link: function (scope, element, attr, mCtrl) {
+        function myValidation(value) {
+        if (value > -1 && isNaN(value)) {
+          mCtrl.$setValidity('countValidator', true);
+        } else {
+          mCtrl.$setValidity('countValidator', false);
+        }
+        return value;
+      }
+      mCtrl.$parsers.push(myValidation);
+      }
+    }
+  });
+

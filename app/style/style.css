@@ -166,3 +166,17 @@ p, ul{
 .small-modal {
   weight: 50px;
 } */
+
+/* 
+        form.ng-valid {
+            background-color:yellow;
+        }
+        form.ng-invalid {
+            background-color:pink;
+        }
+        input.ng-valid {
+            background-color: green;
+        }
+        input.ng-invalid {
+            background-color: red;
+        } */

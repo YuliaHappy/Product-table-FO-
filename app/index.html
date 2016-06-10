@@ -18,31 +18,44 @@
     <div ng-controller="ExampleCtrl">
  
       <!-- Add/Edit modal -->
-      <modal id="modalEdit" title="Product" visible="showModal" backdrop="static">
+      <modal id="modalEdit" title="Product" visible="showModal" data-backdrop="static">
         <form name="productForm" role="form">
-          <div class="form-group">
-            <label for="name">Name product:</label>
-            <input name="name" type="text" class="form-control" id="nameModal" placeholder="Enter name" ng-model="product.name" required/>
-            <p ng-show="productForm.name.$invalid && !productForm.name.$pristine" class="help-block">You name is required.</p>
+
+
+          <div class="form-group" ng-class="{ 'has-error': productForm.name.$invalid && productForm.name.$dirty }">
+            <label for="nameModal">Name product:</label>
+            <div class="form-group">
+              <input name="name" type="text" class="form-control .col-md-6" id="nameModal" placeholder="Enter name" ng-model="nameValid" name-validator/>
+              <p ng-if="productForm.name.$error.nameValidator" class="help-block .col-md-6">You name is required.</p>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="email">Supplier email:</label>
-            <input type="email" class="form-control" id="emailModal" placeholder="Enter email" />
-          </div>      
-          <div class="form-group">
-            <label for="count">Count:</label>
-            <input type="number" class="form-control" id="countModal" placeholder="Enter count" />
-          </div>           
-          <div class="form-group">
-            <label for="price">Price:</label>
-            <input type="number" class="form-control" id="priceModal" placeholder="Enter price" />
+
+
+
+          <div class="form-group" ng-class="{ 'has-error': productForm.email.$invalid && productForm.email.$dirty}">
+            <label for="emailModal" class="control-label">Supplier email:</label>
+            <input name="email" type="email" class="form-control" id="emailModal" placeholder="Enter email" ng-model="emailValid"/>
+            <p ng-if="productForm.email.$error.email" class="help-block">You name is required.</p>
+          </div>  
+
+
+          <div class="form-group has-feedback" ng-class="{ 'has-error': productForm.count.$invalid && productForm.count.$dirty }">
+            <label for="countModal">Count:</label>
+            <input name="count" type="number" class="form-control" id="countModal" placeholder="Enter count" min="1" value="0" step="1" ng-model="countValid" count-validator/>
+            <p ng-if="productForm.count.$error.countValidator" class="help-block">You name is required.</p>            
+          </div>  
+
+
+          <div class="form-group has-feedback">
+            <label for="priceModal">Price:</label>
+            <input name="price" type="number" class="form-control" id="priceModal" placeholder="Enter price" value="0" />
           </div>
-          <button type="submit" id="doneProd" class="btn btn-default">Done</button>
+          <button name="submit" type="submit" id="doneProd" class="btn btn-success">Done</button>
         </form>
       </modal>
 
       <!-- About product modal -->
-      <modal id="modalAbout" title="About product" visible="showModalAbout" backdrop="static">
+      <modal id="modalAbout" title="About product" visible="showModalAbout">
         <form role="form">
           <div class="form-group">
             <label id="nameAbout"></label>
@@ -60,10 +73,10 @@
       </modal>
 
       <!-- Delete modal -->
-      <modal id="modalDelete" class="small-modal" title="Are you sure?" visible="showModalDelete" backdrop="static">
+      <modal id="modalDelete" class="small-modal" title="Are you sure?" visible="showModalDelete" data-backdrop="static">
         <form role="form">
             <label id="question"></label>
-            <div >
+            <div>
               <button type="submit" id="yesDelete" class="btn btn-default">Yes</button>
               <button type="button" id="noDelete" class="btn btn-default">No</button>
             </div>
@@ -74,14 +87,21 @@
 
       <!-- Main form --> 
       <div class="row">
-        <table class="form">
-          <tr>
-            <td class="form-group">
+        <form class="form-inline">
+          <!-- <tr> -->
+            <!-- <td class="form-group"> -->
+            <!-- <div class=".col-md-6"> -->
               <input type="text" class="form-control" ng-model="filter.name" placeholder="filter for product name">
-            </td>
-            <td><button ng-click="updateModal(null)">Add New</button></td>
-          </tr>
-        </tabe>
+              <!-- </div> -->
+            <!-- </td> -->
+            <!-- <td> -->
+            <!-- <div class=".col-md-6"> -->
+            <button ng-click="updateModal(null)" class="btn btn-default">Add New</button>
+            <!-- </div> -->
+            <!-- </td> -->
+          <!-- </tr> -->
+        <!-- </table> -->
+        </form>
 
         <table class="table" si-table>
           <thead>
@@ -98,8 +118,8 @@
                 {{"     (" + product.count + ")"}}</td>
                 <td class="text-muted">{{ product.price | currency}}</td>
                 <td>
-                  <button ng-click="updateModal(product)">Edit</button>
-                  <button ng-click="deleteModal(product)">Delete</button>
+                  <button ng-click="updateModal(product)" class="btn btn-default">Edit</button>
+                  <button ng-click="deleteModal(product)" class="btn btn-default">Delete</button>
                 </td>
               </tr>
             </tbody>
