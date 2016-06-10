@@ -41,7 +41,7 @@
 
           <div class="form-group has-feedback" ng-class="{ 'has-error': productForm.count.$invalid && productForm.count.$dirty }">
             <label for="countModal">Count:</label>
-            <input name="count" type="number" class="form-control" id="countModal" placeholder="Enter count" min="1" value="0" step="1" ng-model="countValid" count-validator/>
+            <input name="count" type="number" class="form-control" id="countModal" placeholder="Enter count" value="0"  min="1" step="1" ng-model="countValid" count-validator/>
             <p ng-if="productForm.count.$error.countValidator" class="help-block">You name is required.</p>            
           </div>  
 

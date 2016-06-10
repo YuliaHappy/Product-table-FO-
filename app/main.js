@@ -198,7 +198,7 @@ mymodal.directive('countValidator', function() {
       require:  'ngModel',
       link: function (scope, element, attr, mCtrl) {
         function myValidation(value) {
-        if (value > -1 && isNaN(value)) {
+        if (value > -1 && value != null) {
           mCtrl.$setValidity('countValidator', true);
         } else {
           mCtrl.$setValidity('countValidator', false);
