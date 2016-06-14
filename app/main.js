@@ -1,17 +1,24 @@
-var mymodal = angular.module('siTableExampleApp', [
+var mymodal = angular.module('app', [
   'siTable'
   ]);
 
-mymodal.controller('ExampleCtrl', function($scope, $http) {
+mymodal.controller('ctrl', function($scope, $http) {
   $scope.filter = {
     $: ''
   };
   $scope.params = {};
 
+  $scope.inputBounce= { "updateOn":"blur"};
+
   // var url = 'products.json';
   // $http.get(url).then(function(products) {
   //   $scope.products = products.data;
   // });
+
+  $scope.blabla=function(productForm){
+      if(!productForm.email.$valid)
+        alert("yippie");
+    }
 
   $scope.products = [
   {
@@ -56,7 +63,7 @@ mymodal.controller('ExampleCtrl', function($scope, $http) {
 
 
 
-mymodal.directive('modal', function () {
+mymodal.directive('modal', function ($filter) {
   return {
     template: '<div class="modal fade">' + 
     '<div class="modal-dialog">' + 
@@ -112,16 +119,16 @@ mymodal.directive('modal', function () {
 
       //Add/Edit modal hidden      
       $('#modalEdit').on("hidden.bs.modal", function () {        
-          $("#nameModal, #priceModal, #emailModal")
-          .val("");
-          $("#countModal").val(0);
+        $("#nameModal, #emailModal").val("");          
+        $("#priceModal").val(0);
+        $("#countModal").val(0);
       });
 
       // About modal open
       $("#modalAbout").on("show.bs.modal", function () {
         scope.title = "About product";
         $("#nameAbout").text("Name product:    " + scope.$parent.aboutProduct.name);
-        $("#priceAbout").text("Price:    " + scope.$parent.aboutProduct.price);
+        $("#priceAbout").text("Price:    " + $filter('currency')(scope.$parent.aboutProduct.price));
         $("#countAbout").text("Count:    " + scope.$parent.aboutProduct.count);
         $("#emailAbout").text("Supplier email:    " + scope.$parent.aboutProduct.email);
       });
@@ -154,8 +161,8 @@ mymodal.directive('modal', function () {
             };
           }
           $('#modalEdit').modal("hide");
-          $("#nameModal, #priceModal, #emailModal")
-            .val("");
+          $("#nameModal, #emailModal").val("");
+          $("#priceModal").val(0);
           $("#countModal").val(0);
         }
       });
@@ -163,8 +170,8 @@ mymodal.directive('modal', function () {
       //Delete product
       $("#yesDelete").on("click", function() {
         scope.$parent.products
-          .splice(scope.$parent.products
-              .indexOf(scope.$parent.deleteProduct), 1);
+        .splice(scope.$parent.products
+          .indexOf(scope.$parent.deleteProduct), 1);
         $("#modalDelete").modal("hide");
       });
       $("#noDelete").on("click", function() {
@@ -175,29 +182,47 @@ mymodal.directive('modal', function () {
 });
 
 mymodal.directive('nameValidator', function() {
-    return {
-      restrict: 'A',
-      require:  'ngModel',
-      link: function (scope, element, attr, mCtrl) {
-        function myValidation(value) {
-        if (value != "" && value.length < 16 && /[^\s]/.test(value)) {
+  return {
+    restrict: 'A',
+    require:  'ngModel',
+    link: function (scope, element, attr, mCtrl) {
+      function myValidation(value) {
+        if (value != "" && value.length < 16 && !/[^\s]/.test(value)) {
           mCtrl.$setValidity('nameValidator', true);
         } else {
           mCtrl.$setValidity('nameValidator', false);
         }
-        return value;
+        return value; 
       }
-      mCtrl.$parsers.push(myValidation);
-      }
+        // mCtrl.$parsers.push(myValidation);
+        // scope.validateInput = myValidation;
+      element.blur( () => {
+        if (element.val() != "" && element.val().length < 16 && /[^\s]/.test(element.val())) {
+          mCtrl.$setValidity('nameValidator', true);
+          // $("#errorName").hide();
+        } else {
+          mCtrl.$setValidity('nameValidator', false);
+          // $("#errorName").show();
+        }
+        // $("#errorName").val("You name is required.");
+        // return element.val(); 
+          // modelCtrl.$showValidationMessage = modelCtrl.$dirty;
+        // mCtrl.$parsers.push(myValidation);
+        // mCtrl.$has
+        // formCtrl
+
+          // scope.$apply();
+      });
     }
-  });
+  }
+});
 
 mymodal.directive('countValidator', function() {
-    return {
-      restrict: 'A',
-      require:  'ngModel',
-      link: function (scope, element, attr, mCtrl) {
-        function myValidation(value) {
+  return {
+    restrict: 'A',
+    require:  'ngModel',
+    link: function (scope, element, attr, mCtrl) {
+      function myValidation(value) {
         if (value > -1 && value != null) {
           mCtrl.$setValidity('countValidator', true);
         } else {
@@ -206,7 +231,31 @@ mymodal.directive('countValidator', function() {
         return value;
       }
       mCtrl.$parsers.push(myValidation);
-      }
     }
-  });
+  }
+});
+
+mymodal.directive('blurToCurrency', function($filter){
+  return {
+    scope: {
+      amount  : '='
+    },
+    link: function(scope, el, attrs){
+      el.val($filter('currency')(scope.amount));
+      
+      el.bind('focus', function(){
+        el.val(scope.amount);
+      });
+      
+      el.bind('input', function(){
+        scope.amount = el.val();
+        scope.$apply();
+      });
+      
+      el.bind('blur', function(){
+        el.val($filter('currency')(scope.amount));
+      });
+    }
+  }
+});
 

@@ -180,3 +180,9 @@ p, ul{
         input.ng-invalid {
             background-color: red;
         } */
+
+.error-container {
+  display: inline-flex;  
+  flex-direction: row;
+  justify-content: space-around;
+}
