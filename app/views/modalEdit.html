@@ -1,0 +1,43 @@
+<!-- Add/Edit modal -->
+<modal id="modalEdit" visible="showModal" data-backdrop="static">
+  <form name="productForm" role="form" novalidate>
+    <div class="form-group" ng-class="{ 'has-error': productForm.name.$invalid && productForm.name.$dirty}">
+      <label for="nameModal">Name product:</label>
+      <div class="error-container ">
+        <input name="name" type="text" class="form-control" id="nameModal" placeholder="Enter name" ng-model="edit.name"  name-validator/>
+        <span ng-show="productForm.name.$error.nameValidator" class="help-block">You name is required.</span> 
+
+        <!-- <span style="color:red" ng-show="productForm.name.$dirty && productForm.name.$invalid"> -->
+<!--               <span ng-show="productForm.name.$error.required">Name is required.</span>
+              <span ng-show="productForm.name.$error.maxlength">Invalid name length.</span>
+              <span ng-show="productForm.name.$error.pattern">Name contains only blank characters.</span> -->
+            </div>
+          </div>
+
+
+
+          <div class="form-group has-feedback" ng-class="{ 'has-error': productForm.email.$invalid && productForm.email.$dirty }">
+            <label for="emailModal" class="control-label">Supplier email:</label>
+            <div class="error-container">
+              <input name="email" type="email" class="form-control" id="emailModal" placeholder="Enter email" ng-required="isEmailRequired" ng-model="edit.email" ng-model-options="{updateOn: 'blur'}" required/> 
+              <!-- <span style="color:red" ng-show="productForm.email.$dirty && productForm.email.$invalid && valid"> -->
+              <span ng-show="productForm.email.$error.required">Email is required.</span>
+              <span ng-show="productForm.email.$error.email">Invalid email address.</span>
+            </div>
+          </div>  
+
+
+          <div class="form-group has-feedback" ng-class="{ 'has-error': productForm.count.$invalid && productForm.count.$dirty }">
+            <label for="countModal">Count:</label>
+            <input name="count" type="number" class="form-control" id="countModal" placeholder="Enter count" ng-model="edit.count" value="0" min="0" step="1" count-validator/>
+            <p ng-if="productForm.count.$error.countValidator" class="help-block">You name is required.</p>         
+          </div>  
+
+
+          <div class="form-group has-feedback">
+            <label for="priceModal">Price:</label>
+            <input name="price" type="number" class="form-control" id="priceModal" placeholder="Enter price" value="0" min="0" blur-to-currency/>
+          </div>
+          <button name="submit" type="submit" id="doneProd" class="btn btn-success">Done</button>
+        </form>
+      </modal>

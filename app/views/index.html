@@ -3,23 +3,25 @@
 <head>
   <title>Products table</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="style/style.css">
+  <link rel="stylesheet" type="text/css" href="../style/style.css">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
-  <script src="../angular/si-table.js"></script>
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script> -->
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="main.js"></script>
-  <!-- <script src="updateModal.js"></script> -->
+
+  <!-- <script src="scripts/ui-bootstrap-tpls-1.3.3.js"></script> -->
+  <script src="../vendor/si-table.js"></script>
+  <!-- <script src="main.js"></script> -->
+
 </head>
 <body>
   <div class="container">
 
-    <div ng-controller="ctrl">
+    <div ng-controller="ProductsController">
 
       <!-- Add/Edit modal -->
-      <modal id="modalEdit" visible="showModal" data-backdrop="static">
+      <modal id="modalEdit" visible="showModalUpdate" data-backdrop="static">
         <form name="productForm" role="form" novalidate>
 
 
@@ -30,9 +32,9 @@
               <span ng-show="productForm.name.$error.nameValidator" class="help-block">You name is required.</span>
 
               <!-- <span style="color:red" ng-show="productForm.name.$dirty && productForm.name.$invalid"> -->
-<!--               <span ng-show="productForm.name.$error.required">Name is required.</span>
+              <span ng-show="productForm.name.$error.required">Name is required.</span>
               <span ng-show="productForm.name.$error.maxlength">Invalid name length.</span>
-              <span ng-show="productForm.name.$error.pattern">Name contains only blank characters.</span> -->
+              <span ng-show="productForm.name.$error.pattern">Name contains only blank characters.</span>
               </div>
             </div>
 
@@ -107,12 +109,13 @@
             <!-- <td> -->
             <!-- <div class=".col-md-6"> -->
             <button ng-click="updateModal(null)" class="btn btn-default">Add New</button>
+
+<!-- <button class="btn btn-default">Add New</button> -->
             <!-- </div> -->
             <!-- </td> -->
             <!-- </tr> -->
             <!-- </table> -->
-          </form>
-
+          </form><!--  -->
           <table class="table" si-table>
             <thead>
               <tr>
@@ -130,12 +133,21 @@
                   <td>
                     <button ng-click="updateModal(product)" class="btn btn-default">Edit</button>
                     <button ng-click="deleteModal(product)" class="btn btn-default">Delete</button>
+                    <!-- <button class="btn btn-default">Edit</button>
+                    <button class="btn btn-default">Delete</button> -->
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
 
+
+  <script src="../app.module.js"></script>
+  <script src="../controllers/products.controller.js"></script>
+  <script src="../directives/modal.directive.js"></script>
+  <script src="../directives/nameValidator.directive.js"></script>
+  <script src="../directives/countValidator.directive.js"></script>
+  <!-- <script src="scripts/modalAbout.controller.js"></script> -->
         </div>
       </body>
       </html>
